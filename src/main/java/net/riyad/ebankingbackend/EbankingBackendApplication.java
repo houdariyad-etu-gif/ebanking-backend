@@ -1,9 +1,11 @@
 package net.riyad.ebankingbackend;
 
+import net.riyad.ebankingbackend.entities.AccountOperation;
 import net.riyad.ebankingbackend.entities.CurrentAccount;
 import net.riyad.ebankingbackend.entities.Customer;
 import net.riyad.ebankingbackend.entities.SavingAccount;
 import net.riyad.ebankingbackend.enums.AccountStatus;
+import net.riyad.ebankingbackend.enums.OperationType;
 import net.riyad.ebankingbackend.repositories.AccountOperationRepository;
 import net.riyad.ebankingbackend.repositories.BankAccountRepository;
 import net.riyad.ebankingbackend.repositories.CustomerRepository;
@@ -53,6 +55,17 @@ public class EbankingBackendApplication {
                 savingAccount.setInterestRate(5.5);
                 bankAccountRepository.save(savingAccount);
             });
+            bankAccountRepository.findAll().forEach(acc->{
+                for (int i = 0; i <10 ; i++){
+                    AccountOperation accountOperation=new AccountOperation();
+                    accountOperation.setOperationDate(new Date());
+                    accountOperation.setAmount(Math.random()*12000);
+                    accountOperation.setType(Math.random()>0.5? OperationType.DEBIT: OperationType.CREDIT);
+                    accountOperation.setBankAccount(acc);
+                    accountOperationRepository.save(accountOperation);
+                }
+            }
+        );
         };
     }
 
