@@ -1,4 +1,7 @@
 package net.riyad.ebankingbackend.exceptions;
 
-public class BalanceNotSufficientException {
+public class BalanceNotSufficientException extends Throwable {
+    public BalanceNotSufficientException(String message) {
+        super(message);
+    }
 }
