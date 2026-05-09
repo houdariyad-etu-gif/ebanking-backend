@@ -1,6 +1,9 @@
 package net.riyad.ebankingbackend;
 
+import net.riyad.ebankingbackend.dtos.BankAccountDTO;
+import net.riyad.ebankingbackend.dtos.CurrentBankAccountDTO;
 import net.riyad.ebankingbackend.dtos.CustomerDTO;
+import net.riyad.ebankingbackend.dtos.SavingBankAccountDTO;
 import net.riyad.ebankingbackend.entities.*;
 import net.riyad.ebankingbackend.enums.AccountStatus;
 import net.riyad.ebankingbackend.enums.OperationType;
@@ -40,11 +43,17 @@ public class EbankingBackendApplication {
                 try {
                     bankAccountService.saveCurrentBankAccount(Math.random()*90000, 9000,customer.getId());
                     bankAccountService.saveSavingBankAccount(Math.random()*120000, 5.5,customer.getId());
-                    List<BankAccount> bankAccounts = bankAccountService.bankAccountList();
-                    for (BankAccount bankAccount:bankAccounts){
+                    List<BankAccountDTO> bankAccounts = bankAccountService.bankAccountList();
+                    for (BankAccountDTO bankAccount:bankAccounts){
                         for (int i = 0 ; i < 10 ; i++){
-                            bankAccountService.credit(bankAccount.getId(),10000+Math.random()*120000,"Customer");
-                            bankAccountService.debit(bankAccount.getId(),1000+Math.random()*9000,"Debit");
+                            String accountId;
+                            if (bankAccount instanceof SavingBankAccountDTO){
+                                accountId = ((SavingBankAccountDTO) bankAccount).getId();
+                            }else{
+                                accountId = ((CurrentBankAccountDTO) bankAccount).getId();
+                            }
+                            bankAccountService.credit(accountId,10000+Math.random()*120000,"Customer");
+                            bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit");
                         }
                     }
 
