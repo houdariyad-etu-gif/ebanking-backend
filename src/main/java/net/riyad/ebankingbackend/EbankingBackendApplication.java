@@ -1,5 +1,6 @@
 package net.riyad.ebankingbackend;
 
+import net.riyad.ebankingbackend.dtos.CustomerDTO;
 import net.riyad.ebankingbackend.entities.*;
 import net.riyad.ebankingbackend.enums.AccountStatus;
 import net.riyad.ebankingbackend.enums.OperationType;
@@ -30,7 +31,7 @@ public class EbankingBackendApplication {
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
         return args -> {
             Stream.of("Nour", "Abdelaziz", "Houda").forEach(name -> {
-                Customer customer = new Customer();
+                CustomerDTO customer = new CustomerDTO();
                 customer.setName(name);
                 customer.setEmail(name + "@gmail.com");
                 bankAccountService.saveCustomer(customer);
