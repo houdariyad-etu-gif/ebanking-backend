@@ -1,13 +1,17 @@
 package net.riyad.ebankingbackend.mappers;
 
+import net.riyad.ebankingbackend.dtos.AccountOperationDTO;
 import net.riyad.ebankingbackend.dtos.CurrentBankAccountDTO;
 import net.riyad.ebankingbackend.dtos.CustomerDTO;
 import net.riyad.ebankingbackend.dtos.SavingBankAccountDTO;
+import net.riyad.ebankingbackend.entities.AccountOperation;
 import net.riyad.ebankingbackend.entities.CurrentAccount;
 import net.riyad.ebankingbackend.entities.Customer;
 import net.riyad.ebankingbackend.entities.SavingAccount;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.security.PublicKey;
 
 @Service
 //MapStruct
@@ -55,4 +59,10 @@ public class BankAccountMapperImpl {
         currentAccount.setCustomer(fromCustomerDTO(currentBankAccountDTO.getCustomerDTO()));
         return currentAccount;
     }
+    public AccountOperationDTO fromAccountOperation(AccountOperation accountOperation){
+        AccountOperationDTO accountOperationDTO=new AccountOperationDTO();
+        BeanUtils.copyProperties (accountOperation, accountOperationDTO);
+        return accountOperationDTO;
+    }
+
 }

@@ -1,9 +1,6 @@
 package net.riyad.ebankingbackend.services;
 
-import net.riyad.ebankingbackend.dtos.BankAccountDTO;
-import net.riyad.ebankingbackend.dtos.CurrentBankAccountDTO;
-import net.riyad.ebankingbackend.dtos.CustomerDTO;
-import net.riyad.ebankingbackend.dtos.SavingBankAccountDTO;
+import net.riyad.ebankingbackend.dtos.*;
 import net.riyad.ebankingbackend.entities.BankAccount;
 import net.riyad.ebankingbackend.exceptions.BalanceNotSufficientException;
 import net.riyad.ebankingbackend.exceptions.BankAccountNotFoundException;
@@ -18,7 +15,7 @@ public interface BankAccountService {
 
     List<CustomerDTO> listCustomers();
     BankAccountDTO getBankAccount(String accountId) throws BankAccountNotFoundException;
-    void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
+    void debit(String accountId, double amount, String description) throws BankAccountNotFoundException,BalanceNotSufficientException;
     void credit(String accountId, double amount, String description) throws BankAccountNotFoundException;
     void transfer(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException;
 
@@ -29,4 +26,8 @@ public interface BankAccountService {
     CustomerDTO updateCustomer(CustomerDTO customerDTO);
 
     void deleteCustomer(Long customerId);
+
+    List<AccountOperationDTO> accountHistory(String accountId);
+
+    AccountHistoryDTO getAccountHistory(String accountId, int page, int size) throws BankAccountNotFoundException;
 }

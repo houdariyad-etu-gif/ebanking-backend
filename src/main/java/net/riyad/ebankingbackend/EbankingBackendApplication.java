@@ -1,14 +1,18 @@
 package net.riyad.ebankingbackend;
 
+
+
 import net.riyad.ebankingbackend.dtos.BankAccountDTO;
 import net.riyad.ebankingbackend.dtos.CurrentBankAccountDTO;
 import net.riyad.ebankingbackend.dtos.CustomerDTO;
 import net.riyad.ebankingbackend.dtos.SavingBankAccountDTO;
-import net.riyad.ebankingbackend.entities.*;
+import net.riyad.ebankingbackend.entities.AccountOperation;
+import net.riyad.ebankingbackend.entities.CurrentAccount;
+import net.riyad.ebankingbackend.entities.Customer;
+import net.riyad.ebankingbackend.entities.SavingAccount;
 import net.riyad.ebankingbackend.enums.AccountStatus;
 import net.riyad.ebankingbackend.enums.OperationType;
 import net.riyad.ebankingbackend.exceptions.BalanceNotSufficientException;
-import net.riyad.ebankingbackend.exceptions.BankAccountNotFoundException;
 import net.riyad.ebankingbackend.exceptions.CustomerNotFoundException;
 import net.riyad.ebankingbackend.repositories.AccountOperationRepository;
 import net.riyad.ebankingbackend.repositories.BankAccountRepository;
@@ -43,26 +47,28 @@ public class EbankingBackendApplication {
                 try {
                     bankAccountService.saveCurrentBankAccount(Math.random()*90000, 9000,customer.getId());
                     bankAccountService.saveSavingBankAccount(Math.random()*120000, 5.5,customer.getId());
-                    List<BankAccountDTO> bankAccounts = bankAccountService.bankAccountList();
-                    for (BankAccountDTO bankAccount:bankAccounts){
-                        for (int i = 0 ; i < 10 ; i++){
-                            String accountId;
-                            if (bankAccount instanceof SavingBankAccountDTO){
-                                accountId = ((SavingBankAccountDTO) bankAccount).getId();
-                            }else{
-                                accountId = ((CurrentBankAccountDTO) bankAccount).getId();
-                            }
-                            bankAccountService.credit(accountId,10000+Math.random()*120000,"Customer");
-                            bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit");
-                        }
-                    }
-
                 } catch (CustomerNotFoundException e) {
                     e.printStackTrace();
-                } catch (BankAccountNotFoundException | BalanceNotSufficientException e) {
-                    throw new RuntimeException(e);
                 }
             });
+            List<BankAccountDTO> bankAccounts = bankAccountService.bankAccountList();
+            for (BankAccountDTO bankAccount:bankAccounts){
+                for (int i = 0 ; i < 10 ; i++){
+                    String accountId;
+                    if (bankAccount instanceof SavingBankAccountDTO){
+                        accountId = ((SavingBankAccountDTO) bankAccount).getId();
+                    }else{
+                        accountId = ((CurrentBankAccountDTO) bankAccount).getId();
+                    }
+                    bankAccountService.credit(accountId,10000+Math.random()*120000,"Customer");
+                    try {
+                        bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit");
+                    } catch (BalanceNotSufficientException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
         };
     }
     //@Bean
