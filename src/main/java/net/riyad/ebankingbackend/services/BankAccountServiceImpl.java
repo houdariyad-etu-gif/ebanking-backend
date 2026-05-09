@@ -114,7 +114,7 @@ public class BankAccountServiceImpl implements BankAccountService{
     public void credit(String accountId, double amount, String description) throws BankAccountNotFoundException {
         BankAccount bankAccount = getBankAccount(accountId);
         AccountOperation accountOperation = new AccountOperation();
-        accountOperation.setType(OperationType.DEBIT);
+        accountOperation.setType(OperationType.CREDIT);
         accountOperation.setAmount(amount);
         accountOperation.setDescription(description);
         accountOperation.setOperationDate(new Date());
