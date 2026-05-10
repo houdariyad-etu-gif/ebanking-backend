@@ -5,14 +5,12 @@ import net.riyad.ebankingbackend.dtos.AccountOperationDTO;
 import net.riyad.ebankingbackend.dtos.BankAccountDTO;
 import net.riyad.ebankingbackend.exceptions.BankAccountNotFoundException;
 import net.riyad.ebankingbackend.services.BankAccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class BankAccountRestAPI {
     private BankAccountService bankAccountService;
 
